@@ -1,0 +1,88 @@
+const router = require('koa-router')()
+const jwt = require('jsonwebtoken')
+const jwyAuth = require('koa-jwt')
+const captcha = require('trek-captcha')
+const fs = require('fs')
+
+const db = require('../../mysql/index')
+let dbs = db.isconnect()
+
+const secret = 'Show_shop'
+
+const user = [{ userid: '12345678', userpsd: '123456789', username: 'Jimmy' }]
+const session = {}
+
+router.get('/login', async (ctx) => {
+  const { token, buffer } = await captcha({ size: 4 })
+  session.number = token
+  ctx.body = buffer
+})
+
+// 登录
+router.post('/login', async (ctx) => {
+  let { form, code } = ctx.request.body
+  if (code !== session.number) {
+    ctx.body = { code: 2, message: '验证码错误' }
+    return
+  }
+  let res = await dbs.find('userpsd', 'user', `userid=${form.userid}`)
+  console.log(res)
+  if (res[0].userpsd === form.userpsd) {
+    if (res[0].userpsd === form.userpsd) {
+      const token = jwt.sign(
+        {
+          data: { name: form.userid },
+          // 过期时间
+          exp: Math.floor(Date.now() / 1000) + 60 * 60,
+        },
+        secret
+      )
+      ctx.body = {
+        code: 1,
+        userName: user.filter((item) => (item.userid = form.userid))[0]
+          .username,
+        token: token,
+      }
+      return
+    }
+    ctx.status = 401
+    ctx.body = { code: 0, message: '用户名或者密码错误' }
+  }
+  // ctx.body = 'Hello Koa'
+})
+
+// 注册
+
+router.post('/register', async (ctx) => {
+  let { header, headername, userphone, userpsd, uname } = ctx.request.body
+  let extent = '.' + headername.split(';')[0].split('/')[1]
+  let img = Buffer.from(header, 'base64')
+  let imgrul = `/header/${userphone}+${Date.now()}${extent}`
+  let headers = __dirname + `../../../static${imgrul}`
+
+  ctx.body = await new Promise((reslove, reject) => {
+    fs.writeFile(headers, img, (err) => {
+      if (err) {
+        reject({ code: 0, message: '照片写入失败' })
+      }
+      dbs
+        .insert('user', `('${userphone}','${userpsd}','${uname}','${imgrul}')`)
+        .then((res) => {
+          if (res.code === 1) {
+            dbs.find('userid', 'user', `userphone=${userphone}`).then((res) => {
+              reslove({
+                code: 1,
+                message: '注册成功',
+                registerid: res[0].userid,
+              })
+            })
+          }
+        })
+        .catch((err) => {
+          reject({ code: 0, message: '注册失败' })
+        })
+    })
+  })
+})
+
+module.exports = router.routes()
