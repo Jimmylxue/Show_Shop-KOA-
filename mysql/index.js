@@ -38,6 +38,8 @@ class db {
       if (way === 'backstage') {
         if (table === 'user') {
           sql = `insert into ${table}(userphone,userpsd,uname,email) values ${options}`
+        } else if (table === 'goodmsg') {
+          sql = `insert into ${table}(goodname,gooddesc,goodimg,freight,type,capacity,classify,brand,price) values ${options}`
         } else {
           sql = `insert into ${table} values ${options}`
         }
@@ -47,7 +49,7 @@ class db {
       // } else {
       //   sql = `insert into ${table} values ${options}`
       // }
-      console.log('sqllll', sql)
+      // console.log('sqllll', sql)
       connection.query(sql, (err, data) => {
         if (err) {
           reject(err)
