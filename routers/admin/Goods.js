@@ -69,4 +69,15 @@ router.post('/clearCount', async ctx => {
   }
   ctx.body = { code: 0, message: '清空失败' }
 })
+// 修改库存
+router.post('/editCount', async ctx => {
+  let id = ctx.request.body.id
+  let count = ctx.request.body.count
+  let res = await dbs.update('goodmsg', `count = ${count}`, `goodid = ${id}`)
+  if (res.code === 1) {
+    ctx.body = res
+    return
+  }
+  ctx.body = { code: 0, message: '清空失败' }
+})
 module.exports = router.routes()
