@@ -38,7 +38,7 @@ router.post('/add', async ctx => {
       dbs
         .insert(
           'goodmsg',
-          `('${name}','${desc}','${imgfile}','${freight}','${type}','${capacity}','${classify}','${brand}','${price}')`,
+          `('${name}','${desc}','http://127.0.0.1:666${imgpostiton}','${freight}','${type}','${capacity}','${classify}','${brand}','${price}')`,
           'backstage'
         )
         .then(res => {
@@ -79,5 +79,33 @@ router.post('/editCount', async ctx => {
     return
   }
   ctx.body = { code: 0, message: '清空失败' }
+})
+
+router.post('/changetag', async ctx => {
+  let { id, tag, nowPrice, price } = ctx.request.body
+  console.log(id, tag, nowPrice, price)
+  ctx.body = await new Promise((reslove, reject) => {
+    if (tag === 'discount') {
+      dbs
+        .update(
+          'goodmsg',
+          `tag = '${tag}',nowPrice = '${nowPrice}'`,
+          `goodid = '${id}'`
+        )
+        .then(res => {
+          reslove(res)
+        })
+      return
+    }
+    dbs
+      .update(
+        'goodmsg',
+        `tag = '${tag}',nowPrice = '${price}'`,
+        `goodid='${id}'`
+      )
+      .then(res => {
+        reslove(res)
+      })
+  })
 })
 module.exports = router.routes()
