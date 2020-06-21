@@ -31,7 +31,7 @@ class db {
   }
 
   // 增
-  insert(table, options, way) {
+  insert(table, options, way = 'before') {
     return new Promise((reslove, reject) => {
       this.connect()
       let sql = ''
@@ -43,13 +43,17 @@ class db {
         } else {
           sql = `insert into ${table} values ${options}`
         }
+      } else if (way === 'before') {
+        if (table === 'cart') {
+          sql = `insert into ${table}(userid,goodid,goodname,gooddesc,goodcount,goodprice,goodfreight,goodimg) values ${options}`
+        }
       }
       // if (table === 'user') {
       //   sql = `insert into ${table}(userphone,userpsd,uname,header) values ${options}`
       // } else {
       //   sql = `insert into ${table} values ${options}`
       // }
-      // console.log('sqllll', sql)
+      console.log('sqllll', sql)
       connection.query(sql, (err, data) => {
         if (err) {
           reject(err)
