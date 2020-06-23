@@ -12,22 +12,26 @@ const secret = 'Show_shop'
 const user = [{ userid: '12345678', userpsd: '123456789', username: 'Jimmy' }]
 const session = {}
 
-router.get('/login', async (ctx) => {
+router.get('/login', async ctx => {
   const { token, buffer } = await captcha({ size: 4 })
   session.number = token
   ctx.body = buffer
 })
 
 // 登录
-router.post('/login', async (ctx) => {
+router.post('/login', async ctx => {
   let { form, code } = ctx.request.body
   if (code !== session.number) {
     ctx.body = { code: 2, message: '验证码错误' }
     return
   }
+  console.log(form)
   let res = await dbs.find('userpsd', 'user', `userid=${form.userid}`)
-  console.log(res)
-  if (res[0].userpsd === form.userpsd) {
+  console.log('ress1', form.userpsd)
+  if (res.length === 0) {
+    ctx.body = { code: 0, message: '请出入正确的账号' }
+  }
+  try {
     if (res[0].userpsd === form.userpsd) {
       const token = jwt.sign(
         {
@@ -39,21 +43,23 @@ router.post('/login', async (ctx) => {
       )
       ctx.body = {
         code: 1,
-        userName: user.filter((item) => (item.userid = form.userid))[0]
-          .username,
+        userName: user.filter(item => (item.userid = form.userid))[0].username,
         token: token,
       }
       return
+      // ctx.status = 401
     }
-    ctx.status = 401
+    ctx.body = { code: 0, message: '用户名或者密码错误' }
+  } catch {
     ctx.body = { code: 0, message: '用户名或者密码错误' }
   }
+
   // ctx.body = 'Hello Koa'
 })
 
 // 注册
 
-router.post('/register', async (ctx) => {
+router.post('/register', async ctx => {
   let { header, headername, userphone, userpsd, uname } = ctx.request.body
   let extent = '.' + headername.split(';')[0].split('/')[1]
   let img = Buffer.from(header, 'base64')
@@ -61,15 +67,15 @@ router.post('/register', async (ctx) => {
   let headers = __dirname + `../../../static${imgrul}`
 
   ctx.body = await new Promise((reslove, reject) => {
-    fs.writeFile(headers, img, (err) => {
+    fs.writeFile(headers, img, err => {
       if (err) {
         reject({ code: 0, message: '照片写入失败' })
       }
       dbs
         .insert('user', `('${userphone}','${userpsd}','${uname}','${imgrul}')`)
-        .then((res) => {
+        .then(res => {
           if (res.code === 1) {
-            dbs.find('userid', 'user', `userphone=${userphone}`).then((res) => {
+            dbs.find('userid', 'user', `userphone=${userphone}`).then(res => {
               reslove({
                 code: 1,
                 message: '注册成功',
@@ -78,7 +84,7 @@ router.post('/register', async (ctx) => {
             })
           }
         })
-        .catch((err) => {
+        .catch(err => {
           reject({ code: 0, message: '注册失败' })
         })
     })

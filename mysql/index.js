@@ -46,6 +46,8 @@ class db {
       } else if (way === 'before') {
         if (table === 'cart') {
           sql = `insert into ${table}(userid,goodid,goodname,gooddesc,goodcount,goodprice,goodfreight,goodimg) values ${options}`
+        } else if (table === 'receipt') {
+          sql = `insert into ${table}(userid,username,phone,province,city,area,detail,flag) values ${options}`
         }
       }
       // if (table === 'user') {
