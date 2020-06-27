@@ -65,6 +65,7 @@ router.post('/register', async ctx => {
   let img = Buffer.from(header, 'base64')
   let imgrul = `/header/${userphone}+${Date.now()}${extent}`
   let headers = __dirname + `../../../static${imgrul}`
+  let enter = `http://127.0.0.1:666${imgrul}`
 
   ctx.body = await new Promise((reslove, reject) => {
     fs.writeFile(headers, img, err => {
@@ -72,7 +73,7 @@ router.post('/register', async ctx => {
         reject({ code: 0, message: '照片写入失败' })
       }
       dbs
-        .insert('user', `('${userphone}','${userpsd}','${uname}','${imgrul}')`)
+        .insert('user', `('${userphone}','${userpsd}','${uname}','${enter}')`)
         .then(res => {
           if (res.code === 1) {
             dbs.find('userid', 'user', `userphone=${userphone}`).then(res => {
@@ -89,6 +90,14 @@ router.post('/register', async ctx => {
         })
     })
   })
+})
+
+router.post('/getUser', async ctx => {
+  let id = ctx.request.body.id
+  // console.log(ctx.request.body)
+  ctx.body = { code: 200, message: 'hello' }
+  console.log(id)
+  ctx.body = await dbs.find('*', 'user', `userid = ${id}`)
 })
 
 module.exports = router.routes()

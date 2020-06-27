@@ -1,6 +1,9 @@
 const router = require('koa-router')()
 const dbs = require('../../mysql/index').isconnect()
 
+router.get('/', async ctx => {
+  ctx.body = 'hello'
+})
 router.post('/addCart', async ctx => {
   let {
     userId,

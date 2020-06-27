@@ -2,8 +2,9 @@ const router = require('koa-router')()
 
 const dbs = require('../../mysql/index').isconnect()
 
-router.get('/list', async ctx => {
-  ctx.body = { code: 200, message: '请求成功' }
+router.post('/getOrder', async ctx => {
+  let { userid } = ctx.request.body
+  ctx.body = await dbs.find('*', 'orders', `userid = ${userid}`)
 })
 
 router.post('/addOrder', async ctx => {
