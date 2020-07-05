@@ -25,9 +25,9 @@ router.post('/login', async ctx => {
     ctx.body = { code: 2, message: '验证码错误' }
     return
   }
-  console.log(form)
+  // console.log(form)
   let res = await dbs.find('userpsd', 'user', `userid=${form.userid}`)
-  console.log('ress1', form.userpsd)
+  // console.log('ress1', form.userpsd)
   if (res.length === 0) {
     ctx.body = { code: 0, message: '请出入正确的账号' }
   }
@@ -96,7 +96,7 @@ router.post('/getUser', async ctx => {
   let id = ctx.request.body.id
   // console.log(ctx.request.body)
   ctx.body = { code: 200, message: 'hello' }
-  console.log(id)
+  // console.log(id)
   ctx.body = await dbs.find('*', 'user', `userid = ${id}`)
 })
 

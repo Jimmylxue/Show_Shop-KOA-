@@ -33,7 +33,7 @@ router.post('/cartList', async ctx => {
 router.post('/deleteOne', async ctx => {
   let { id } = ctx.request.body
   let res = await dbs.delete('cart', `cartid = ${id}`)
-  console.log(res)
+  // console.log(res)
   if (res.code === 1) {
     ctx.body = { code: 200, message: '操作成功' }
   }

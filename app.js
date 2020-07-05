@@ -5,6 +5,8 @@ const static = require('koa-static')
 
 const client = require('./routers/client.js')
 const admin = require('./routers/admin.js')
+const slider = require('./routers/UI/slider')
+const plugin = require('./routers/img_plugin')
 
 const app = new koa()
 const server = require('http').Server(app.callback())
@@ -57,6 +59,8 @@ app.use(bodyparser())
 
 router.use('/client', client)
 router.use('/admin', admin)
+router.use('/img_plugin', plugin)
+router.use('/slider', slider)
 
 app.use(router.routes())
 

@@ -11,9 +11,9 @@ router.get('/', async ctx => {
 
 router.get('/allgood', async ctx => {
   let id = ctx.query.id
-  console.log(id)
+  // console.log(id)
   if (id == 'all') {
-    console.log('hello')
+    // console.log('hello')
     ctx.body = await dbs.find('*', 'goodmsg')
     return
   }
@@ -24,7 +24,7 @@ router.get('/allgood', async ctx => {
 
 router.post('/getSomeGood', async ctx => {
   let { ids } = ctx.request.body
-  console.log('one', ids)
+  // console.log('one', ids)
   ids = JSON.parse(ids)
   let options = getOrOption(ids)
 
