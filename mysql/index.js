@@ -40,6 +40,8 @@ class db {
           sql = `insert into ${table}(userphone,userpsd,uname,email) values ${options}`
         } else if (table === 'goodmsg') {
           sql = `insert into ${table}(goodname,gooddesc,goodimg,imgs,freight,type,capacity,classify,brand,price) values ${options}`
+        } else if (table === 'slider') {
+          sql = `insert into ${table}(sliderimg) values ${options}`
         } else {
           sql = `insert into ${table} values ${options}`
         }
