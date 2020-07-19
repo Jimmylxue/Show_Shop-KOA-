@@ -32,6 +32,7 @@ class db {
 
   // 增
   insert(table, options, way = 'before') {
+    // console.log('aaa')
     return new Promise((reslove, reject) => {
       this.connect()
       let sql = ''
@@ -42,6 +43,9 @@ class db {
           sql = `insert into ${table}(goodname,gooddesc,goodimg,imgs,freight,type,capacity,classify,brand,price) values ${options}`
         } else if (table === 'slider') {
           sql = `insert into ${table}(sliderimg) values ${options}`
+        } else if (table === 'navbtns') {
+          console.log(7777)
+          sql = `insert into ${table}(name,url) values ${options}`
         } else {
           sql = `insert into ${table} values ${options}`
         }
