@@ -26,7 +26,7 @@ router.post('/login', async ctx => {
     return
   }
   // console.log(form)
-  let res = await dbs.find('userpsd', 'user', `userid=${form.userid}`)
+  let res = await dbs.find('*', 'user', `userid=${form.userid}`)
   // console.log('ress1', form.userpsd)
   if (res.length === 0) {
     ctx.body = { code: 0, message: '请出入正确的账号' }
@@ -41,9 +41,11 @@ router.post('/login', async ctx => {
         },
         secret
       )
+      console.log(res[0])
       ctx.body = {
         code: 1,
         userName: user.filter(item => (item.userid = form.userid))[0].username,
+        msg: res[0],
         token: token,
       }
       return

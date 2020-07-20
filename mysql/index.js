@@ -44,8 +44,9 @@ class db {
         } else if (table === 'slider') {
           sql = `insert into ${table}(sliderimg) values ${options}`
         } else if (table === 'navbtns') {
-          console.log(7777)
           sql = `insert into ${table}(name,url) values ${options}`
+        } else if (table === 'functionmode') {
+          sql = `insert into ${table}(functionName,img,url) values ${options}`
         } else {
           sql = `insert into ${table} values ${options}`
         }
@@ -80,6 +81,7 @@ class db {
     return new Promise((reslove, reject) => {
       this.connect()
       let sql = `delete from ${table} where ${option}`
+      // console.log(sql)
       connection.query(sql, (err, data) => {
         if (err) {
           reject(err)
@@ -127,6 +129,19 @@ class db {
           return
         }
         reslove(data)
+      })
+    })
+  }
+
+  other(sql) {
+    return new Promise((reslove, reject) => {
+      this.connect()
+      connection.query(sql, (err, data) => {
+        if (err) {
+          reject({ code: 0, reslut: '失败' })
+          return
+        }
+        reslove({ code: 1, reslut: '请求成功' })
       })
     })
   }
