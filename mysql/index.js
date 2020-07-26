@@ -55,6 +55,8 @@ class db {
           sql = `insert into ${table}(userid,goodid,goodname,gooddesc,goodcount,goodprice,goodfreight,goodimg) values ${options}`
         } else if (table === 'receipt') {
           sql = `insert into ${table}(userid,username,phone,province,city,area,detail,flag) values ${options}`
+        } else if (table === 'user') {
+          sql = `insert into ${table}(userphone,userpsd,uname,header) values ${options}`
         } else if (table === 'orders')
           sql = `insert into ${table}(userid,buyname,username,orderprice,phone,goodid,goodcount,province,city,area,detail,createtime,paystatus,payWay) values ${options}`
       }
@@ -134,6 +136,7 @@ class db {
   }
 
   other(sql) {
+    console.log('sql', sql)
     return new Promise((reslove, reject) => {
       this.connect()
       connection.query(sql, (err, data) => {

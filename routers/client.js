@@ -1,6 +1,6 @@
 const router = require('koa-router')()
 
-const user = require('./client/user')
+const { user } = require('./client/user')
 const good = require('./client/goods')
 const cart = require('./client/cart')
 const receipt = require('./client/receipt')

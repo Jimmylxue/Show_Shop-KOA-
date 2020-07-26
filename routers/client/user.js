@@ -3,16 +3,19 @@ const jwt = require('jsonwebtoken')
 const jwyAuth = require('koa-jwt')
 const captcha = require('trek-captcha')
 const fs = require('fs')
+const tokenConfig = require('../../api/tokenConfig')
 
 const db = require('../../mysql/index')
 let dbs = db.isconnect()
+let myToken = new tokenConfig(`Jimmy's Show_shop`)
 
 const secret = 'Show_shop'
 
-const user = [{ userid: '12345678', userpsd: '123456789', username: 'Jimmy' }]
+// const user = [{ userid: '12345678', userpsd: '123456789', username: 'Jimmy' }]
 const session = {}
 
 router.get('/login', async ctx => {
+  console.log('give you')
   const { token, buffer } = await captcha({ size: 4 })
   session.number = token
   ctx.body = buffer
@@ -25,6 +28,7 @@ router.post('/login', async ctx => {
     ctx.body = { code: 2, message: '验证码错误' }
     return
   }
+
   // console.log(form)
   let res = await dbs.find('*', 'user', `userid=${form.userid}`)
   // console.log('ress1', form.userpsd)
@@ -33,18 +37,22 @@ router.post('/login', async ctx => {
   }
   try {
     if (res[0].userpsd === form.userpsd) {
-      const token = jwt.sign(
-        {
-          data: { name: form.userid },
-          // 过期时间
-          exp: Math.floor(Date.now() / 1000) + 60 * 60,
-        },
-        secret
+      // const token = jwt.sign(
+      //   {
+      //     data: { name: form.userid },
+      //     // 过期时间
+      //     exp: Math.floor(Date.now() / 1000) + 60 * 60,
+      //   },
+      //   secret
+      // )
+      const token = myToken.signToken(
+        form.userid,
+        Math.floor(Date.now() / 1000) + 60 * 60
       )
       console.log(res[0])
       ctx.body = {
         code: 1,
-        userName: user.filter(item => (item.userid = form.userid))[0].username,
+        userName: res[0].uname,
         msg: res[0],
         token: token,
       }
@@ -60,7 +68,6 @@ router.post('/login', async ctx => {
 })
 
 // 注册
-
 router.post('/register', async ctx => {
   let { header, headername, userphone, userpsd, uname } = ctx.request.body
   let extent = '.' + headername.split(';')[0].split('/')[1]
@@ -75,7 +82,11 @@ router.post('/register', async ctx => {
         reject({ code: 0, message: '照片写入失败' })
       }
       dbs
-        .insert('user', `('${userphone}','${userpsd}','${uname}','${enter}')`)
+        .insert(
+          'user',
+          `('${userphone}','${userpsd}','${uname}','${enter}')`,
+          'before'
+        )
         .then(res => {
           if (res.code === 1) {
             dbs.find('userid', 'user', `userphone=${userphone}`).then(res => {
@@ -102,4 +113,4 @@ router.post('/getUser', async ctx => {
   ctx.body = await dbs.find('*', 'user', `userid = ${id}`)
 })
 
-module.exports = router.routes()
+module.exports = { user: router.routes(), myToken }
