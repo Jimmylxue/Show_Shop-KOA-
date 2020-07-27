@@ -1,6 +1,4 @@
 const router = require('koa-router')()
-const jwt = require('jsonwebtoken')
-const jwyAuth = require('koa-jwt')
 const captcha = require('trek-captcha')
 const fs = require('fs')
 const tokenConfig = require('../../api/tokenConfig')
@@ -8,8 +6,6 @@ const tokenConfig = require('../../api/tokenConfig')
 const db = require('../../mysql/index')
 let dbs = db.isconnect()
 let myToken = new tokenConfig(`Jimmy's Show_shop`)
-
-const secret = 'Show_shop'
 
 // const user = [{ userid: '12345678', userpsd: '123456789', username: 'Jimmy' }]
 const session = {}

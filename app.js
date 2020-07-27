@@ -8,6 +8,7 @@ const admin = require('./routers/admin.js')
 const Ui = require('./routers/UI/index')
 const plugin = require('./routers/img_plugin')
 const chat = require('./routers/chat/index')
+const video = require('./routers/video')
 const { myToken } = require('./routers/client/user') //共享token信息
 const koajwt = require('koa-jwt') // 反向验证token插件
 
@@ -59,13 +60,13 @@ io.on('connection', socket => {
   })
 })
 
-app.use(
-  koajwt({
-    secret: myToken.secret,
-  }).unless({
-    path: [/\/register/, /\/login/],
-  })
-)
+// app.use(
+//   koajwt({
+//     secret: myToken.secret,
+//   }).unless({
+//     path: [/\/register/, /\/login/],
+//   })
+// )
 
 app.use(bodyparser())
 
@@ -75,6 +76,7 @@ router.use('/admin', admin)
 router.use('/img_plugin', plugin)
 router.use('/ui', Ui)
 router.use('/chat', chat)
+router.use('/video', video)
 
 app.use(router.routes())
 
