@@ -47,6 +47,8 @@ class db {
           sql = `insert into ${table}(name,url) values ${options}`
         } else if (table === 'functionmode') {
           sql = `insert into ${table}(functionName,img,url) values ${options}`
+        } else if (table === 'video') {
+          sql = `insert into ${table}(title,img,url) values ${options}`
         } else {
           sql = `insert into ${table} values ${options}`
         }
@@ -83,7 +85,7 @@ class db {
     return new Promise((reslove, reject) => {
       this.connect()
       let sql = `delete from ${table} where ${option}`
-      // console.log(sql)
+      console.log(sql)
       connection.query(sql, (err, data) => {
         if (err) {
           reject(err)
