@@ -49,6 +49,8 @@ class db {
           sql = `insert into ${table}(functionName,img,url) values ${options}`
         } else if (table === 'video') {
           sql = `insert into ${table}(title,img,url) values ${options}`
+        } else if (table === 'background') {
+          sql = `insert into ${table}(background) values ${options}`
         } else {
           sql = `insert into ${table} values ${options}`
         }
