@@ -20,11 +20,11 @@ router.post('/getSomeGood', async ctx => {
   ids = JSON.parse(ids)
   let options = getOrOption(ids)
   console.log('999', options)
-  try {
-    ctx.body = await db.find('*', 'goodmsg', options)
-  } catch {
-    ctx.body = { code: 201, message: '请求成功后台' }
-  }
+  // try {
+  ctx.body = await db.find('*', 'goodmsg', options)
+  // } catch {
+  //   ctx.body = { code: 201, message: '请求成功后台' }
+  // }
 })
 
 function getOrOption(obj) {
