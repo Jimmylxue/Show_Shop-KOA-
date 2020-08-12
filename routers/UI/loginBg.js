@@ -21,6 +21,17 @@ router.post('/add', async ctx => {
 
 router.post('/update', async ctx => {
   let { id } = ctx.request.body
+  console.log(id)
+  let res = await dbs.update('background', `status=0`, `id!=${id}`)
+  if (res.code == 1) {
+    await dbs.update('background', 'status=1', `id=${id}`).then(res => {
+      if (res.code == 1) {
+        ctx.body = { code: 200, result: '操作成功' }
+      } else {
+        ctx.body = { code: 10000, result: '请求失败' }
+      }
+    })
+  }
 })
 
 router.post('/del', async ctx => {
