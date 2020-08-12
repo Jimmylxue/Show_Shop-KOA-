@@ -28,11 +28,11 @@ router.post('/getSomeGood', async ctx => {
   ids = JSON.parse(ids)
   let options = getOrOption(ids)
 
-  try {
-    ctx.body = await dbs.find('*', 'goodmsg', options)
-  } catch {
-    ctx.body = { code: 201, message: '请求成功后台' }
-  }
+  // try {
+  ctx.body = await dbs.find('*', 'goodmsg', options)
+  // } catch {
+  //   ctx.body = { code: 201, message: '请求成功后台' }
+  // }
   // console.log('two', JSON.parse(ids))
 })
 
