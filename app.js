@@ -11,6 +11,7 @@ const chat = require('./routers/chat/index')
 const video = require('./routers/video')
 const { myToken } = require('./routers/client/user') //共享token信息
 const koajwt = require('koa-jwt') // 反向验证token插件
+const { nextTick } = require('process')
 
 const app = new koa()
 const server = require('http').Server(app.callback())
@@ -67,6 +68,11 @@ io.on('connection', socket => {
 //     path: [/\/register/, /\/login/],
 //   })
 // )
+
+app.use(async (ctx, next) => {
+  ctx.body = 666
+  await next()
+})
 
 app.use(bodyparser())
 
