@@ -94,9 +94,9 @@ router.post('/register', async ctx => {
             })
           }
         })
-        .catch(err => {
-          reject({ code: 0, message: '注册失败' })
-        })
+      // .catch(err => {
+      //   reject({ code: 0, message: '注册失败' })
+      // })
     })
   })
 })
