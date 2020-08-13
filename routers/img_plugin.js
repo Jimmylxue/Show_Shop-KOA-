@@ -54,11 +54,11 @@ router.post('/delImg', async ctx => {
   // console.log(dir, filename)
   let objdir = resolve(__dirname, `../static/${dir}/${filename}`)
   // console.log(objdir)
-  try {
-    fs.unlinkSync(objdir)
-  } catch {
-    ctx.body = { code: 0, message: '删除失败' }
-  }
+  // try {
+  fs.unlinkSync(objdir)
+  // } catch {
+  //   ctx.body = { code: 0, message: '删除失败' }
+  // }
   ctx.body = { code: 200, message: '操作成功' }
 })
 
