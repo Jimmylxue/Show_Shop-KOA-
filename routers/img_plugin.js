@@ -35,17 +35,17 @@ router.post('/getImgs', async ctx => {
 router.post('/uploadImgs', async ctx => {
   let { filename, files } = ctx.request.body
   // console.log(filename, files)
-  try {
-    files.map(item => {
-      let extend = '.' + item.imgname.split(';')[0].split('/')[1]
-      let img = Buffer.from(item.imgsrc, 'base64')
-      let imgname = `${Date.now()}${extend}`
-      let imgpostiton = resolve(__dirname, `../static/${filename}/${imgname}`)
-      fs.writeFileSync(imgpostiton, img)
-    })
-  } catch {
-    ctx.body = { code: 0, message: '添加失败' }
-  }
+  // try {
+  files.map(item => {
+    let extend = '.' + item.imgname.split(';')[0].split('/')[1]
+    let img = Buffer.from(item.imgsrc, 'base64')
+    let imgname = `${Date.now()}${extend}`
+    let imgpostiton = resolve(__dirname, `../static/${filename}/${imgname}`)
+    fs.writeFileSync(imgpostiton, img)
+  })
+  // } catch {
+  //   ctx.body = { code: 0, message: '添加失败' }
+  // }
   ctx.body = { code: 200, message: '请求成功' }
 })
 
