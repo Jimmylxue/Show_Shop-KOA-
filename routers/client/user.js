@@ -11,6 +11,7 @@ let myToken = new tokenConfig(`Jimmy's Show_shop`)
 const session = {}
 
 router.get('/login', async ctx => {
+  console.log('123456')
   console.log('give you')
   const { token, buffer } = await captcha({ size: 4 })
   session.number = token
@@ -31,34 +32,34 @@ router.post('/login', async ctx => {
   if (res.length === 0) {
     ctx.body = { code: 0, message: '请出入正确的账号' }
   }
-  // try {
-  if (res[0].userpsd === form.userpsd) {
-    // const token = jwt.sign(
-    //   {
-    //     data: { name: form.userid },
-    //     // 过期时间
-    //     exp: Math.floor(Date.now() / 1000) + 60 * 60,
-    //   },
-    //   secret
-    // )
-    const token = myToken.signToken(
-      form.userid,
-      Math.floor(Date.now() / 1000) + 60 * 60
-    )
-    console.log(res[0])
-    ctx.body = {
-      code: 1,
-      userName: res[0].uname,
-      msg: res[0],
-      token: token,
+  try {
+    if (res[0].userpsd === form.userpsd) {
+      // const token = jwt.sign(
+      //   {
+      //     data: { name: form.userid },
+      //     // 过期时间
+      //     exp: Math.floor(Date.now() / 1000) + 60 * 60,
+      //   },
+      //   secret
+      // )
+      const token = myToken.signToken(
+        form.userid,
+        Math.floor(Date.now() / 1000) + 60 * 60
+      )
+      console.log(res[0])
+      ctx.body = {
+        code: 1,
+        userName: res[0].uname,
+        msg: res[0],
+        token: token,
+      }
+      return
+      // ctx.status = 401
     }
-    return
-    // ctx.status = 401
+    ctx.body = { code: 0, message: '用户名或者密码错误' }
+  } catch {
+    ctx.body = { code: 0, message: '用户名或者密码错误' }
   }
-  ctx.body = { code: 0, message: '用户名或者密码错误' }
-  // } catch {
-  //   ctx.body = { code: 0, message: '用户名或者密码错误' }
-  // }
 
   // ctx.body = 'Hello Koa'
 })
