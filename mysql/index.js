@@ -128,7 +128,7 @@ class db {
         sql = `select ${option1} from ${table} where ${option2}`
       }
 
-      // console.log('sql', sql)
+      console.log('sql', sql)
       connection.query(sql, (err, data) => {
         if (err) {
           reject(err)
