@@ -36,6 +36,17 @@ router.post('/getSomeGood', async ctx => {
   // console.log('two', JSON.parse(ids))
 })
 
+// 模糊搜索
+router.post('/fuzzy', async ctx => {
+  let { keyWord } = ctx.request.body
+  let res = await dbs.find(
+    '*',
+    'goodmsg',
+    `goodname LIKE '%${keyWord}%' LIMIT 8`
+  )
+  ctx.body = { code: 200, result: res }
+})
+
 // obj只能是数组对象
 function getOrOption(obj) {
   let option = ''

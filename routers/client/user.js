@@ -21,7 +21,7 @@ router.get('/login', async ctx => {
 // 登录
 router.post('/login', async ctx => {
   let { form, code } = ctx.request.body
-  if (code !== session.number) {
+  if (code.toLowerCase() !== session.number) {
     ctx.body = { code: 2, message: '验证码错误' }
     return
   }

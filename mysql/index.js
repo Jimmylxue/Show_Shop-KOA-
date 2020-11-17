@@ -69,7 +69,7 @@ class db {
       // } else {
       //   sql = `insert into ${table} values ${options}`
       // }
-      console.log('sqllll', sql)
+      // console.log('sqllll', sql)
       connection.query(sql, (err, data) => {
         if (err) {
           reject(err)
@@ -87,7 +87,7 @@ class db {
     return new Promise((reslove, reject) => {
       this.connect()
       let sql = `delete from ${table} where ${option}`
-      console.log(sql)
+      // console.log(sql)
       connection.query(sql, (err, data) => {
         if (err) {
           reject(err)
@@ -104,10 +104,10 @@ class db {
     return new Promise((reslove, reject) => {
       this.connect()
       let sql = `update ${table} set ${option1} where ${option2}`
-      console.log('sql', sql)
+      // console.log('sql', sql)
       connection.query(sql, (err, data) => {
         if (err) {
-          console.log('errsss', err)
+          // console.log('errsss', err)
           reject(err)
         }
         if (data.affectedRows !== 0) {
@@ -140,7 +140,7 @@ class db {
   }
 
   other(sql) {
-    console.log('sql', sql)
+    // console.log('sql', sql)
     return new Promise((reslove, reject) => {
       this.connect()
       connection.query(sql, (err, data) => {
